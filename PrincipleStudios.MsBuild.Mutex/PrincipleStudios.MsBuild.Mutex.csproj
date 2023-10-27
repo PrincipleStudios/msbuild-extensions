@@ -1,0 +1,40 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>netstandard2.0</TargetFramework>
+		<VersionPrefix Condition=" '$(VersionPrefix)' == '' ">$(MsBuildMutexVersion)</VersionPrefix>
+
+		<IsPackable>true</IsPackable>
+		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+
+		<PackageLicenseExpression>BSD-2-Clause</PackageLicenseExpression>
+		<title>Mutex-protected tasks for executing outside code as a critical section</title>
+		<PackageSummary>Adds tasks to msbuild to protect certain actions with critical sections.</PackageSummary>
+		<PackageTags>msbuild;mutex;critical sections</PackageTags>
+		<description>Adds tasks to msbuild to protect certain actions with critical sections.</description>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<IncludeBuildOutput>false</IncludeBuildOutput>
+		<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+		<PackageReadmeFile>readme.md</PackageReadmeFile>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.Build.Tasks.Core" Version="[17.4.0,)" />
+		<PackageReference Include="Microsoft.Build.Utilities.Core" Version="[17.4.0,)" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Include="*.props" Pack="true" PackagePath="build" />
+		<None Include="*.targets" Pack="true" PackagePath="build" />
+		<None Include="readme.md" Pack="true" PackagePath="\" Visible="false" />
+	</ItemGroup>
+
+	<Target Name="AddDlls" BeforeTargets="_GetPackageFiles">
+		<!-- Resolves NU5128 -->
+		<Touch Files="$(OutputPath)\_._" AlwaysCreate="true" />
+		<ItemGroup>
+			<None Include="$(OutputPath)\_._" Pack="true" PackagePath="lib/$(TargetFramework)" Visible="false" />
+			<None Include="$(TargetPath)" Pack="true" PackagePath="build/$(TargetFileName)" Visible="false" />
+		</ItemGroup>
+	</Target>
+</Project>

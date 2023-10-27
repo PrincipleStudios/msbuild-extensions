@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Project>
+	<PropertyGroup>
+		<RootNamespace>PrincipleStudios.MsBuild</RootNamespace>
+		<TargetFramework>netstandard2.0</TargetFramework>
+		<SolutionRoot>$(MSBuildThisFileDirectory)</SolutionRoot>
+		<RepositoryEngineeringDir>$(SolutionRoot)eng/</RepositoryEngineeringDir>
+		<Nullable>enable</Nullable>
+		<LangVersion>10</LangVersion>
+
+		<Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+		<Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+		<ArtifactsDir>$([MSBuild]::NormalizeDirectory('$(SolutionRoot)', 'artifacts'))</ArtifactsDir>
+		<ArtifactsBinDir>$([MSBuild]::NormalizeDirectory('$(ArtifactsDir)', 'bin'))</ArtifactsBinDir>
+		<ArtifactsObjDir>$([MSBuild]::NormalizeDirectory('$(ArtifactsDir)', 'obj'))</ArtifactsObjDir>
+		<PackageOutputPath>$([MSBuild]::NormalizeDirectory('$(ArtifactsDir)', 'packages', '$(PlatformName)', '$(Configuration)'))</PackageOutputPath>
+		<BaseIntermediateOutputPath>$([MSBuild]::NormalizeDirectory('$(ArtifactsObjDir)', '$(MSBuildProjectName)'))</BaseIntermediateOutputPath>
+		<MSBuildProjectExtensionsPath>$(BaseIntermediateOutputPath)</MSBuildProjectExtensionsPath>
+		<BaseOutputPath>$([MSBuild]::NormalizeDirectory('$(ArtifactsBinDir)', '$(MSBuildProjectName)'))</BaseOutputPath>
+		<IntermediateOutputPath Condition="'$(PlatformName)' == 'AnyCPU'">$(BaseIntermediateOutputPath)$(Configuration)\</IntermediateOutputPath>
+		<IntermediateOutputPath Condition="'$(PlatformName)' != 'AnyCPU'">$(BaseIntermediateOutputPath)$(PlatformName)\$(Configuration)\</IntermediateOutputPath>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<MsBuildMutexVersion>0.1.0</MsBuildMutexVersion>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<Authors>Principle Studios, Matt DeKrey</Authors>
+		<PackageProjectUrl>https://github.com/PrincipleStudios/msbuild-extensions</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/PrincipleStudios/msbuild-extensions.git</RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
+		<RepositoryBranch>main</RepositoryBranch>
+		<PublishRepositoryUrl>true</PublishRepositoryUrl>
+		<PackageIcon>logo_black_small.png</PackageIcon>
+		<Copyright>2023 Matt DeKrey &amp; Principle Studios</Copyright>
+	</PropertyGroup>
+
+	<Import Project="eng/AutoCodeFormat.targets" Condition="exists('$(MSBuildThisFileDirectory)eng/AutoCodeFormat.targets')" />
+
+	<ItemGroup>
+		<None Include="$(MSBuildThisFileDirectory)assets\logo_black_small.png" Pack="true" PackagePath="\" Visible="false"/>
+	</ItemGroup>
+</Project>

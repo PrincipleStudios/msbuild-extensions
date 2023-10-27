@@ -1,0 +1,25 @@
+<Project>
+	<PropertyGroup>
+		<AnalysisMode>AllEnabledByDefault</AnalysisMode>
+		<CodeAnalysisTreatWarningsAsErrors>true</CodeAnalysisTreatWarningsAsErrors>
+		<EnableNETAnalyzers>true</EnableNETAnalyzers>
+		<EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+		<AnalysisLevel>latest</AnalysisLevel>
+		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+		<WarningsAsErrors />
+		<!--
+			CA1050 - Declare types in namespaces - cannot do this for msbuild tasks
+		 -->
+		<NoWarn>$(NoWarn);CA1050</NoWarn>
+		<!--
+			test project supressions:
+		 -->
+		<NoWarn Condition=" $(AssemblyName.EndsWith('.Test')) ">$(NoWarn)</NoWarn>
+
+	</PropertyGroup>
+
+	<Target Name="_FormatSourceFiles" BeforeTargets="BeforeBuild" Inputs="@(Compile)" Outputs="@(IntermediateAssembly)">
+		<Exec WorkingDirectory="$(ProjectDir)" Command="dotnet format $(ProjectPath)" />
+	</Target>
+
+</Project>
