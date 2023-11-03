@@ -22,7 +22,7 @@
 	</PropertyGroup>
 
 	<PropertyGroup>
-		<MsBuildMutexVersion>0.1.0</MsBuildMutexVersion>
+		<MsBuildMutexVersion>0.1.1</MsBuildMutexVersion>
 	</PropertyGroup>
 
 	<PropertyGroup>
